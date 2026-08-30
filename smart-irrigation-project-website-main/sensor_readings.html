@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Irrigation Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #2c7a7b;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+      margin-bottom: 20px;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #2f855a;
+    }
+    .value {
+      font-size: 16px;
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 8px;
+    }
+    .good {
+      background: #c6f6d5; /* light green */
+    }
+    .warn {
+      background: #fefcbf; /* light yellow */
+    }
+    .bad {
+      background: #fed7d7; /* light red */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌱 Smart Irrigation Dashboard</h1>
+    <div id="sensor-data"></div>
+  </div>
+
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLjlDnZg9d9sJ2lCLUKGJ3pqbI_FHOB1Y",
+      authDomain: "rpi-to-esp.firebaseapp.com",
+      databaseURL: "https://rpi-to-esp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "rpi-to-esp",
+      storageBucket: "rpi-to-esp.firebasestorage.app",
+      messagingSenderId: "430584609743",
+      appId: "1:430584609743:web:be81735fca8c403bcc30ba",
+      measurementId: "G-QPHK5018E3"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Reference to sensor_readings
+    const sensorRef = ref(db, "sensor_readings");
+
+    // Utility: add color class based on value
+    function classifyValue(type, value) {
+      if (type === "soil") {
+        if (value > 2000) return "bad";   // too dry
+        if (value > 1000) return "warn";  // medium
+        return "good";                    // good moisture
+      }
+      if (type === "temp") {
+        if (value > 35) return "bad";     // too hot
+        if (value < 15) return "warn";    // too cold
+        return "good";                    // optimal
+      }
+      return "";
+    }
+
+    // Listen for updates
+    onValue(sensorRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      // Get latest entry
+      const keys = Object.keys(data);
+      const latestKey = keys[keys.length - 1];
+      const latestData = data[latestKey];
+
+      const sensors = latestData.PiSensors || {};
+      const slave = latestData.Slave || {};
+      const timestamp = latestData.timestamp || "";
+
+      const sensorDiv = document.getElementById("sensor-data");
+      sensorDiv.innerHTML = `
+        <div class="card">
+          <h2>📅 ${timestamp}</h2>
+          <div class="value"><b>BMP280 Pressure:</b> ${sensors.BMP280_Pressure}</div>
+          <div class="value ${classifyValue("temp", sensors.BMP280_Temp)}"><b>BMP280 Temp:</b> ${sensors.BMP280_Temp} °C</div>
+          <div class="value"><b>DHT22 Humidity:</b> ${sensors.DHT22_Humidity} %</div>
+          <div class="value ${classifyValue("temp", sensors.DHT22_Temp)}"><b>DHT22 Temp:</b> ${sensors.DHT22_Temp} °C</div>
+          <div class="value ${classifyValue("temp", sensors.PT1000_Temp)}"><b>PT1000 Temp:</b> ${sensors.PT1000_Temp} °C</div>
+          <div class="value"><b>Rain:</b> ${sensors.Rain}</div>
+          <div class="value ${classifyValue("soil", sensors.SM1)}"><b>Soil Moisture 1:</b> ${sensors.SM1}</div>
+          <div class="value ${classifyValue("soil", sensors.SM2)}"><b>Soil Moisture 2:</b> ${sensors.SM2}</div>
+          <div class="value"><b>Wind Speed:</b> ${sensors.WindSpeed}</div>
+          <hr>
+          <div class="value ${classifyValue("soil", slave.Soil1)}"><b>Soil1:</b> ${slave.Soil1}</div>
+          <div class="value ${classifyValue("soil", slave.Soil2)}"><b>Soil2:</b> ${slave.Soil2}</div>
+          <div class="value ${classifyValue("soil", slave.Soil3)}"><b>Soil3:</b> ${slave.Soil3}</div>
+          <div class="value ${classifyValue("soil", slave.Soil4)}"><b>Soil4:</b> ${slave.Soil4}</div>
+          <div class="value ${classifyValue("temp", slave.Temp1)}"><b>Slave Temp1:</b> ${slave.Temp1} °C</div>
+          <div class="value ${classifyValue("temp", slave.Temp2)}"><b>Slave Temp2:</b> ${slave.Temp2} °C</div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>

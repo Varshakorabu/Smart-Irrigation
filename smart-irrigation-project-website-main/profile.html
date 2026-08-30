@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ಸ್ಮಾರ್ಟ್ ಸಿಂಚನ - ರೈತರ ಪ್ರೊಫೈಲ್</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: white; border-radius: 20px; padding: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); margin-bottom: 20px;
+    }
+    .logo-section { display: flex; align-items: center; gap: 15px; }
+    .logo {
+      width: 60px; height: 60px; background: #4CAF50; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: white;
+    }
+    .system-title { color: #2E7D32; font-size: 20px; font-weight: 600; }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-link {
+      color: #4CAF50; text-decoration: none; font-weight: 500;
+      padding: 10px 15px; border-radius: 8px; transition: 0.3s;
+    }
+    .nav-link:hover, .nav-link.active { background: #4CAF50; color: white; }
+    .profile-container {
+      background: white; border-radius: 20px; padding: 30px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); margin-bottom: 20px;
+    }
+    .profile-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+    }
+    .profile-title { color: #2E7D32; font-size: 24px; font-weight: 600; }
+    .edit-btn {
+      background: #4CAF50; color: white; border: none; border-radius: 8px;
+      padding: 10px 20px; font-weight: 500; cursor: pointer;
+    }
+    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .profile-card {
+      background: lightgreen; border-radius: 12px; padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .card-title {
+      color: #2E7D32; font-size: 18px; font-weight: 600;
+      margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0;
+    }
+    .info-item { display: flex; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+    .info-label { color: #666; font-weight: 1000; }
+    .info-value { color: #333; font-weight: 1000; }
+    .footer { text-align: center; color: white; margin-top: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-section">
+      <div class="logo">🌱</div>
+      
+      <h1 class="system-title">ಸ್ಮಾರ್ಟ್ ಸಿಂಚನ ವ್ಯವಸ್ಥೆ</h1>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active">ಪ್ರೊಫೈಲ್</a>
+      <a href="#" class="nav-link" id="logoutBtn">ಲಾಗ್ ಔಟ್</a>
+    </div>
+  </div>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h2 class="profile-title">ರೈತರ ಪ್ರೊಫೈಲ್</h2>
+      <button class="edit-btn" id="editProfileBtn">ಪ್ರೊಫೈಲ್ ಸಂಪಾದನೆ</button>
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-card">
+        <h3 class="card-title">ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಗಳು</h3>
+        <div class="info-item"><span class="info-label">ಹೆಸರು:</span><span class="info-value" id="profileName">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ದೂರವಾಣಿ ಸಂಖ್ಯೆ:</span><span class="info-value" id="profilePhone">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಖಾತೆ ಸೃಷ್ಟಿಸಿದ ದಿನಾಂಕ:</span><span class="info-value" id="profileCreatedAt">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+      </div>
+
+      <div class="profile-card">
+        <h3 class="card-title">ಸ್ಥಳ ಮಾಹಿತಿ</h3>
+        <div class="info-item"><span class="info-label">ರಾಜ್ಯ:</span><span class="info-value" id="profileState">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ತಾಲೂಕು:</span><span class="info-value" id="profileTaluk">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಗ್ರಾಮ:</span><span class="info-value" id="profileVillage">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+      </div>
+
+      <div class="profile-card">
+        <h3 class="card-title">ಹಣ್ಣು ಬೆಳೆಯುವ ಮಾಹಿತಿ</h3>
+        <div class="info-item"><span class="info-label">ಬೆಳೆ:</span><span class="info-value" id="profileCrop">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಬೆಳೆ ಆರಂಭ ದಿನಾಂಕ:</span><span class="info-value" id="profileCropDate">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಮಣ್ಣಿನ ವಿಧ:</span><span class="info-value" id="profileSoilType">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಮಣ್ಣಿನ pH ಮೌಲ್ಯ:</span><span class="info-value" id="profileSoilPH">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+      </div>
+
+      <div class="profile-card">
+        <h3 class="card-title">ಖಾತೆ ಮಾಹಿತಿ</h3>
+        <div class="info-item"><span class="info-label">ಬಳಕೆದಾರ ID:</span><span class="info-value" id="profileUserId">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಇಮೇಲ್:</span><span class="info-value" id="profileEmail">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span></div>
+        <div class="info-item"><span class="info-label">ಸ್ಥಿತಿ:</span><span class="info-value" style="color: #4CAF50;">ಸಕ್ರಿಯ</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>ಸ್ಮಾರ್ಟ್ ಸಿಂಚನ ವ್ಯವಸ್ಥೆ © 2025 | ಬುದ್ಧಿವಂತ ನೀರು ನಿರ್ವಹಣೆ</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVzjc_wkA4kvDIcOGPobn3NVUItVuI3_Q",
+      authDomain: "smartirriaug2025.firebaseapp.com",
+      projectId: "smartirriaug2025",
+      storageBucket: "smartirriaug2025.appspot.com",
+      messagingSenderId: "297001736270",
+      appId: "1:297001736270:web:8aa96f7a2c977768b70b1f",
+      measurementId: "G-R1XG8Z8LNR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const hardcodedUid = "vIonrgoTtGr5nRhgYwUl";
+    loadUserProfile(hardcodedUid);
+
+    async function loadUserProfile(userId) {
+      try {
+        const userDocRef = doc(db, "farmers", userId);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          console.log("ಪ್ರೊಫೈಲ್:", data);
+          populateProfileData(data, userId);
+        } else {
+          alert("ಬಳಕೆದಾರ ಪ್ರೊಫೈಲ್ Firestore ನಲ್ಲಿ ಕಂಡುಬರಲಿಲ್ಲ.");
+        }
+      } catch (e) {
+        console.error("ಪ್ರೊಫೈಲ್ ಪಡೆಯುವಲ್ಲಿ ದೋಷ:", e);
+      }
+    }
+
+    function populateProfileData(data, userId) {
+      document.getElementById("profileName").textContent = data.name || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profilePhone").textContent = data.phone || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      
+      if (data.createdAt?.seconds) {
+        const date = new Date(data.createdAt.seconds * 1000);
+        document.getElementById("profileCreatedAt").textContent = date.toLocaleDateString();
+      } else {
+        document.getElementById("profileCreatedAt").textContent = "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      }
+
+      document.getElementById("profileState").textContent = data.state || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileTaluk").textContent = data.taluk || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileVillage").textContent = data.village || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileCrop").textContent = data.crop || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileCropDate").textContent = data.crop_start_date || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileSoilType").textContent = data.soil_type || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileSoilPH").textContent = data.soil_ph || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+      document.getElementById("profileUserId").textContent = userId;
+      document.getElementById("profileEmail").textContent = data.email || "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ";
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
