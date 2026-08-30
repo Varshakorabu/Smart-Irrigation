@@ -23,8 +23,8 @@ The system uses IoT devices and Machine Learning techniques to monitor soil and 
 
 ## My Role
 
-I worked as the Project Lead, coordinating the team, managing project activities, contributing to system design, documentation, and project presentations.
+I was a project team member, actively contributing throughout the one-year development of the Smart Irrigation System. I worked with the team on system development, documentation, testing, and project presentations while gaining practical experience in IoT, embedded systems, cloud integration, and machine learning.
 
 ## What I Learned
 
-This project provided hands-on experience in IoT, embedded systems, cloud integration, machine learning, team leadership, and real-world problem solving.
+This one-year project gave me valuable hands-on experience in building and working with a real-world IoT system. I learned about ESP32, Raspberry Pi, IoT sensors, Firebase, Python, machine learning, system integration, debugging, documentation, and teamwork. The project also helped me understand how different technologies come together to solve real-world problems and strengthened my collaboration, problem-solving, and technical skills.
