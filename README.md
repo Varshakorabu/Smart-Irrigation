@@ -23,7 +23,7 @@ The system uses IoT devices and Machine Learning techniques to monitor soil and 
 
 ## My Role
 
-I worked as the Project Lead, coordinating the team, managing project activities, contributing to system design, documentation, and project presentations.
+I worked as the Project Team-member, coordinating the team, managing project activities, contributing to system design, documentation, and project presentations.
 
 ## What I Learned
 
