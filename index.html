@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ಕೃಷಿಸೇತು - ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಅಪ್ಲಿಕೇಶನ್</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase App (core SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+</head>
+<body>
+    <!-- ಮೇಲಿನ ನಾವಿಗೇಶನ್ ಬಾರ್ -->
+    <header class="top-bar">
+        <div class="logo-container">
+            <img src="logo.png" alt="ಕೃಷಿಸೇತು ಲೋಗೋ" class="app-logo">
+            <h1 class="app-name">ಕೃಷಿಸೇತು</h1>
+        </div>
+        <!-- <div class="notification">
+            <i class="fas fa-bell notification-icon"></i>
+            <span class="notification-badge">3</span>
+        </div> -->
+    </header>
+
+    <!-- ಮುಖ್ಯ ವಿಷಯ ಪ್ರದೇಶ -->
+    <main class="content-area home-content">
+        <h2 class="welcome-text">ಕೃಷಿಸೇತು ಅಪ್ಲಿಕೇಶನ್‌ಗೆ ಸ್ವಾಗತ</h2>
+        
+        <div class="card-container">
+            <div class="info-card weather-card">
+                <i class="fas fa-cloud-sun card-icon"></i>
+                <h3>ಪ್ರಸ್ತುತ ಹವಾಮಾನ</h3>
+                <p class="card-value">28°C, ಭಾಗಶಃ ಮೋಡಬಾರದ</p>
+                <p class="card-desc">ಸಿಂಚನಕ್ಕೆ ಅತ್ಯುತ್ತಮ ಸಮಯ</p>
+            </div>
+            
+            <div class="info-card irrigation-card">
+                <i class="fas fa-tint card-icon"></i>
+                <h3>ಸಿಂಚನ ಸಲಹೆಗಳು</h3>
+                <p class="card-value">ಆದರ್ಶ ಸಮಯ: ಸಾಯಂಕಾಲ</p>
+                <p class="card-desc">ಹೆಚ್ಚು ವಿವರಗಳಿಗೆ ಟ್ಯಾಪ್ ಮಾಡಿ</p>
+            </div>
+            
+            <div class="info-card crop-card">
+                <i class="fas fa-seedling card-icon"></i>
+                <h3>ಬೆಳೆಯ ಆರೋಗ್ಯ</h3>
+                <p class="card-value">ಅತ್ಯುತ್ತಮ</p>
+                <p class="card-desc">ಯಾವುದೇ ಸಮಸ್ಯೆಗಳು ಕಂಡುಬರಲಿಲ್ಲ</p>
+            </div>
+            
+            <div class="info-card market-card">
+                <i class="fas fa-store card-icon"></i>
+                <h3>ಸರ್ಕಾರಿ ಸಹಾಯಧನಗಳು</h3>
+                <p class="card-value">ಹೆಚ್ಚಾಗುತ್ತಿದೆ ↑</p>
+                <p class="card-desc">ಅವಕಾಶವನ್ನು ಹಿಡಿಯಲು ಉತ್ತಮ ಸಮಯ</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ಕೆಳಗಿನ ನಾವಿಗೇಶನ್ ಬಾರ್ -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-text">ಮುಖಪುಟ</span>
+        </a>
+        <a href="readings.html" class="nav-item">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-text">ಮಾಪನಗಳು</span>
+        </a>
+        <a href="plot.html" class="nav-item">
+            <i class="fas fa-leaf nav-icon"></i>
+            <span class="nav-text">ಗ್ರಾಫ್ ವೀಕ್ಷಣೆ</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>
+            <span class="nav-text">ಪ್ರೊಫೈಲ್</span>
+        </a>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDaLkJsggXVevpz7HydAyn7EJStXqVeel0",
+        authDomain: "smart-irrigation-fb76f.firebaseapp.com",
+        databaseURL: "https://smart-irrigation-fb76f-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "smart-irrigation-fb76f",
+        storageBucket: "smart-irrigation-fb76f.firebasestorage.app",
+        messagingSenderId: "593054844124",
+        appId: "1:593054844124:web:c812d8d0bcba7216d9a019"
+      };
+      
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

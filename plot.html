@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="kn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ಸ್ಮಾರ್ಟ್ ನೀರಾವರಿ - ಸೆನ್ಸಾರ್ ಡೇಟಾ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      /*background: #f8fafc;*/
+      background: darkgreen;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+          }
+
+    .latest-prediction, .motor-status {
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 20px;
+      background:white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .charts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      font-weight: 1000;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      flex: 1 1 300px;
+      min-width: 300px;
+      font-weight: 1000;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>📊 ಸ್ಮಾರ್ಟ್ ನೀರಾವರಿ ಸೆನ್ಸಾರ್ ಡೇಟಾ (ಕಳೆದ 7 ದಿನಗಳ)</h1>
+
+    <div class="latest-prediction">
+      🌱 ಇತ್ತೀಚಿನ ನೀರಾವರಿ: <span id="latestPrediction">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span>
+    </div>
+
+    <div class="motor-status">
+      ⚡ ಮೋಟಾರ್ ಸ್ಥಿತಿ: <span id="motorStatus">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</span>
+    </div>
+
+    <div class="charts" id="charts">
+      <div class="chart-container"><canvas id="BMP280_Pressure"></canvas></div>
+      <div class="chart-container"><canvas id="BMP280_Temp"></canvas></div>
+      <div class="chart-container"><canvas id="DHT11_Humidity"></canvas></div>
+      <div class="chart-container"><canvas id="DHT11_Temp"></canvas></div>
+      <div class="chart-container"><canvas id="PT1000_Temp"></canvas></div>
+      <div class="chart-container"><canvas id="Rain"></canvas></div>
+      <div class="chart-container"><canvas id="SM1"></canvas></div>
+      <div class="chart-container"><canvas id="WindSpeed"></canvas></div>
+      <div class="chart-container"><canvas id="Soil1"></canvas></div>
+      <div class="chart-container"><canvas id="Soil3"></canvas></div>
+      <div class="chart-container"><canvas id="Temp1"></canvas></div>
+      <div class="chart-container"><canvas id="Temp2"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLjlDnZg9d9sJ2lCLUKGJ3pqbI_FHOB1Y",
+      authDomain: "rpi-to-esp.firebaseapp.com",
+      databaseURL: "https://rpi-to-esp-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "rpi-to-esp",
+      storageBucket: "rpi-to-esp.firebasestorage.app",
+      messagingSenderId: "430584609743",
+      appId: "1:430584609743:web:be81735fca8c403bcc30ba",
+      measurementId: "G-QPHK5018E3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const sensorList = [
+      "BMP280_Pressure",
+      "BMP280_Temp",
+      "DHT11_Humidity",
+      "DHT11_Temp",
+      "PT1000_Temp",
+      "Rain",
+      "SM1",
+      "WindSpeed",
+      "Soil1",
+      "Soil3",
+      "Temp1",
+      "Temp2"
+    ];
+
+    const sensorLabels = {
+      "BMP280_Pressure": "ವಾತಾವರಣದ ಒತ್ತಡ",
+      "BMP280_Temp": "BMP280 ತಾಪಮಾನ",
+      "DHT11_Humidity": "ಆದ್ರತೆ",
+      "DHT11_Temp": "DHT11 ತಾಪಮಾನ",
+      "PT1000_Temp": "PT1000 ತಾಪಮಾನ",
+      "Rain": "ಮಳೆ ಸೆನ್ಸಾರ್",
+      "SM1": "ಮಣ್ಣು ನಮನ ಶೇಕಡಾವಾರು",
+      "WindSpeed": "ಗಾಳಿ ವೇಗ",
+      "Soil1": "ಮಣ್ಣು ಸೆನ್ಸಾರ್ 1",
+      "Soil3": "ಮಣ್ಣು ಸೆನ್ಸಾರ್ 3",
+      "Temp1": "ತಾಪಮಾನ 1",
+      "Temp2": "ತಾಪಮಾನ 2"
+    };
+
+    const charts = {};
+
+    function createChart(sensorId) {
+      const ctx = document.getElementById(sensorId).getContext("2d");
+      charts[sensorId] = new Chart(ctx, {
+        type: "line",
+        data: { labels: [], datasets: [{ label: sensorLabels[sensorId], data: [], borderColor: "#2c7a7b", backgroundColor: "rgba(44,122,123,0.2)", tension: 0.3, fill: true, pointRadius: 3 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: true } },
+          scales: {
+            x: { title: { display: true, text: "ದಿನಾಂಕ" } },
+            y: { title: { display: true, text: "ಮೌಲ್ಯ" }, beginAtZero: false }
+          }
+        }
+      });
+    }
+
+    sensorList.forEach(sensor => createChart(sensor));
+
+    function calibrateSoilReading(rawValue) {
+      const minRaw = 0;
+      const maxRaw = 3000;
+      rawValue = Math.max(minRaw, Math.min(maxRaw, rawValue));
+      return ((maxRaw - rawValue) / (maxRaw - minRaw) * 100).toFixed(1);
+    }
+
+    const sensorRef = ref(db, "sensor_readings");
+    onValue(sensorRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+
+      const keys = Object.keys(data);
+      if (keys.length === 0) return;
+
+      const latestKey = keys[keys.length - 1];
+      const latestEntry = data[latestKey];
+
+      if (latestEntry.prediction !== undefined) {
+        const prediction = latestEntry.prediction;
+        document.getElementById('latestPrediction').textContent =
+          prediction === 1 ? '🚨 ನೀರಾವರಿ ಅಗತ್ಯವಿದೆ!' : '✅ ನೀರಾವರಿ ಅಗತ್ಯವಿಲ್ಲ';
+        document.getElementById('latestPrediction').style.color =
+          prediction === 1 ? 'red' : 'green';
+
+        document.getElementById('motorStatus').textContent =
+          prediction === 1 ? '🔴 ಚಾಲಿತ' : '⚪ ನಿಷ್ಕ್ರಿಯ';
+        document.getElementById('motorStatus').style.color =
+          prediction === 1 ? 'green' : 'gray';
+      }
+
+      sensorList.forEach(sensor => {
+        charts[sensor].data.labels = [];
+        charts[sensor].data.datasets[0].data = [];
+      });
+
+      const now = new Date();
+      const sevenDaysAgo = now.getTime() - (7 * 24 * 60 * 60 * 1000);
+      const dailyLatest = {};
+
+      keys.forEach((key) => {
+        const entry = data[key];
+        const sensors = entry.PiSensors || {};
+        const slave = entry.Slave || {};
+        const timeStr = entry.timestamp || key;
+
+        const entryDate = new Date(timeStr);
+        if (isNaN(entryDate)) return;
+        if (entryDate.getTime() < sevenDaysAgo) return;
+
+        const dayKey = entryDate.toISOString().split("T")[0];
+        dailyLatest[dayKey] = { time: dayKey, sensors, slave };
+      });
+
+      Object.values(dailyLatest).forEach(({ time, sensors, slave }) => {
+        sensorList.forEach(sensor => {
+          let value = null;
+          if (sensors[sensor] !== undefined) value = sensors[sensor];
+          if (slave[sensor] !== undefined) value = slave[sensor];
+
+          if (value !== null) {
+            if (['Soil1', 'Soil3'].includes(sensor)) {
+              value = calibrateSoilReading(value);
+            }
+            charts[sensor].data.labels.push(time);
+            charts[sensor].data.datasets[0].data.push(value);
+          }
+        });
+      });
+
+      sensorList.forEach(sensor => charts[sensor].update());
+    });
+  </script>
+</body>
+
+</html>
+
+
+

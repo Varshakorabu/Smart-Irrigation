@@ -1,0 +1,501 @@
+Base Styles & Reset
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --light-bg: #f9f9f9;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --gradient-primary: linear-gradient(135deg, #2ecc71, #27ae60);
+    --gradient-secondary: linear-gradient(135deg, #3498db, #2980b9);
+    --gradient-accent: linear-gradient(135deg, #e74c3c, #c0392b);
+    --gradient-neutral: linear-gradient(135deg, #95a5a6, #7f8c8d);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 70px; /* Space for fixed bottom nav */
+    padding-top: 70px; /* Space for fixed top bar */
+}
+
+/* Top Navigation Bar */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    height: 60px;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.app-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.app-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.notification {
+    position: relative;
+}
+
+.notification-icon {
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--accent-color);
+    color: var(--white);
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main Content Area */
+.content-area {
+    padding: 20px;
+}
+
+.welcome-text {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Card Styles */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-card {
+    background-color: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.card-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+/* Card Theme Colors */
+.weather-card {
+    background: var(--gradient-secondary);
+    color: var(--white);
+}
+
+.weather-card .card-desc {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.irrigation-card {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+.irrigation-card .card-desc {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.crop-card {
+    background: var(--gradient-neutral);
+    color: var(--white);
+}
+
+.crop-card .card-desc {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.market-card {
+    background: var(--gradient-accent);
+    color: var(--white);
+}
+
+.market-card .card-desc {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    height: 60px;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #888;
+    padding: 8px 0;
+    width: 25%;
+    transition: all 0.2s ease;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    margin-bottom: 3px;
+}
+
+.nav-text {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.nav-item:hover {
+    color: var(--primary-color);
+}
+
+/* Readings Page Specific Styles */
+.readings-content .card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.reading-card {
+    padding: 20px;
+    border-radius: 15px;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.temperature-card {
+    background: linear-gradient(135deg, #FF9500, #FF5E3A);
+}
+
+.moisture-card {
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+}
+
+.rain-card {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.humidity-card {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
+
+.reading-value {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.reading-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.reading-status {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Growing Status Page Styles */
+.plant-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.plant-visual {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.plant-stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 100px; /* Will be animated */
+    background-color: #27ae60;
+    transition: height 2s ease;
+}
+
+.plant-leaf {
+    position: absolute;
+    width: 40px;
+    height: 20px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    opacity: 0; /* Will be animated */
+    transition: all 1s ease;
+}
+
+.plant-leaf-1 {
+    bottom: 60px;
+    left: 30px;
+    transform: rotate(-30deg);
+}
+
+.plant-leaf-2 {
+    bottom: 70px;
+    right: 30px;
+    transform: rotate(30deg);
+}
+
+.plant-leaf-3 {
+    bottom: 100px;
+    left: 35px;
+    transform: rotate(-45deg);
+}
+
+.plant-leaf-4 {
+    bottom: 110px;
+    right: 35px;
+    transform: rotate(45deg);
+}
+
+.plant-pot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 50px;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    border-radius: 5px 5px 25px 25px;
+}
+
+.irrigation-status {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.status-watering {
+    color: #3498db;
+    font-weight: 500;
+}
+
+.status-not-watering {
+    color: #2ecc71;
+    font-weight: 500;
+}
+
+.growth-timeline {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.timeline-title {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.timeline-date {
+    min-width: 90px;
+    font-weight: 500;
+}
+
+.timeline-content {
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 2px solid var(--primary-color);
+}
+
+/* Profile Page Styles */
+.profile-container {
+    background-color: var(--white);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin-right: 20px;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.profile-role {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.profile-section {
+    margin-bottom: 25px;
+}
+
+.profile-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.profile-info-item {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.profile-info-label {
+    width: 100px;
+    font-weight: 500;
+    color: #777;
+}
+
+.profile-info-value {
+    flex: 1;
+    font-weight: 400;
+}
+
+.profile-section-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 20px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 360px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .readings-content .card-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-text {
+        font-size: 0.6rem;
+    }
+}
+
+/* Animation classes - to be added via JavaScript */
+.grow-stem {
+    height: 150px !important;
+}
+
+.show-leaf {
+    opacity: 1 !important;
+}

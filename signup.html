@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ಸ್ಮಾರ್ಟ್ ಕೃಷಿ - ರೈತ ನೋಂದಣಿ</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(120, 200, 80, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(46, 204, 113, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .form-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 10px 20px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      font-size: 48px;
+      margin-bottom: 10px;
+      color: #2ecc71;
+    }
+    
+    .form-wrapper h1 {
+      color: #2c3e50;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+    
+    .form-grid {
+      display: grid;
+      gap: 20px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .form-group {
+      position: relative;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+      font-size: 14px;
+      position: relative;
+    }
+    
+    label::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(45deg, #2ecc71, #27ae60);
+      margin-right: 8px;
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e6ed;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #ffffff;
+      color: #2c3e50;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2ecc71;
+      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    input:hover, select:hover {
+      border-color: #bdc3c7;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(45deg, #2ecc71, #27ae60);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+    }
+    
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .feature {
+      text-align: center;
+      padding: 15px;
+      background: rgba(46, 204, 113, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    
+    .feature-text {
+      font-size: 12px;
+      color: #27ae60;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .form-wrapper {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .logo {
+        font-size: 40px;
+      }
+      
+      .form-wrapper h1 {
+        font-size: 24px;
+      }
+    }
+    
+    .loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+    .loading .submit-btn {
+      background: #bdc3c7;
+    }
+    
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .success {
+      animation: successPulse 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="form-wrapper" id="formWrapper">
+      <div class="header">
+        <div class="logo">🌾</div>
+        <h1>ರೈತ ನೋಂದಣಿ</h1>
+        <p class="subtitle">ನಮ್ಮ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ವೇದಿಕೆಗೆ ಸೇರಿ, ಬುದ್ಧಿವಂತವಾಗಿ ಬೆಳೆಯಿರಿ</p>
+        
+        <div class="features">
+          <div class="feature">
+            <span class="feature-icon">📊</span>
+            <span class="feature-text">ಸ್ಮಾರ್ಟ್ ವಿಶ್ಲೇಷಣೆ</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">🌡️</span>
+            <span class="feature-text">ಹವಾಮಾನ ಮಾಹಿತಿ</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">💧</span>
+            <span class="feature-text">ನೀರು ನಿಯಂತ್ರಣ</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="registerForm" class="form-grid">
+        <div class="form-group full-width">
+          <label>👤 ಸಂಪೂರ್ಣ ಹೆಸರು</label>
+          <input type="text" id="name" required placeholder="ನಿಮ್ಮ ಸಂಪೂರ್ಣ ಹೆಸರು ನಮೂದಿಸಿ" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>📧 ಇಮೇಲ್</label>
+          <input type="email" id="email" required placeholder="ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>📱 ಮೊಬೈಲ್ ಸಂಖ್ಯೆ</label>
+            <input type="tel" id="phone" pattern="[0-9]{10}" required placeholder="10-ಅಂಕಿ ಸಂಖ್ಯೆ" />
+          </div>
+          <div class="form-group">
+            <label>🔐 ಪಾಸ್‌ವರ್ಡ್</label>
+            <input type="password" id="password" required placeholder="ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>🌱 ಪ್ರಾಥಮಿಕ ಬೆಳೆ</label>
+            <input type="text" id="crop" required placeholder="ಉದಾ., ಅನ್ನ, ಗೋದಿ, ಹತ್ತಿ" />
+          </div>
+          <div class="form-group">
+            <label>📅 ಬೆಳೆ ಆರಂಭ ದಿನಾಂಕ</label>
+            <input type="date" id="crop_start_date" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>🧪 ಮಣ್ಣಿನ pH ಮಟ್ಟ</label>
+            <input type="number" step="0.1" min="0" max="14" id="soil_ph" required placeholder="6.5" />
+          </div>
+          <div class="form-group">
+            <label>🏔️ ಮಣ್ಣಿನ ಪ್ರಕಾರ</label>
+            <input type="text" id="soil_type" required placeholder="ಉದಾ., ಮಣ್ಣು, ಮರಳು, ಲೋಮ್" />
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label>🗺️ ರಾಜ್ಯ</label>
+          <input type="text" id="state" required placeholder="ನಿಮ್ಮ ರಾಜ್ಯ ನಮೂದಿಸಿ" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>🏘️ ತಾಲೂಕು</label>
+            <input type="text" id="taluk" required placeholder="ತಾಲೂಕು ನಮೂದಿಸಿ" />
+          </div>
+          <div class="form-group">
+            <label>🏡 ಗ್ರಾಮ</label>
+            <input type="text" id="village" required placeholder="ಗ್ರಾಮ ನಮೂದಿಸಿ" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          🚀 ನೋಂದಣಿ & ಬುದ್ಧಿವಂತವಾಗಿ ಬೆಳೆಯಿರಿ
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDK and JS logic remains the same -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVzjc_wkA4kvDIcOGPobn3NVUItVuI3_Q",
+      authDomain: "smartirriaug2025.firebaseapp.com",
+      projectId: "smartirriaug2025",
+      storageBucket: "smartirriaug2025.firebasestorage.app",
+      messagingSenderId: "297001736270",
+      appId: "1:297001736270:web:8aa96f7a2c977768b70b1f",
+      measurementId: "G-R1XG8Z8LNR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("registerForm");
+    const formWrapper = document.getElementById("formWrapper");
+    const submitBtn = document.querySelector(".submit-btn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      formWrapper.classList.add("loading");
+      submitBtn.innerHTML = "🔄 ನೋಂದಣಿ ಮಾಡುತ್ತಿದೆ...";
+
+      const farmerData = {
+        name: document.getElementById("name").value.trim(),
+        email:document.getElementById("email").value,
+        phone: document.getElementById("phone").value.trim(),
+        password: document.getElementById("password").value,
+        crop: document.getElementById("crop").value.trim(),
+        crop_start_date: document.getElementById("crop_start_date").value,
+        soil_ph: parseFloat(document.getElementById("soil_ph").value),
+        soil_type: document.getElementById("soil_type").value.trim(),
+        state: document.getElementById("state").value.trim(),
+        taluk: document.getElementById("taluk").value.trim(),
+        village: document.getElementById("village").value.trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "farmers"), farmerData);
+        formWrapper.classList.remove("loading");
+        formWrapper.classList.add("success");
+        submitBtn.innerHTML = "✅ ನೋಂದಣಿ ಯಶಸ್ವಿ!";
+        submitBtn.style.background = "linear-gradient(45deg, #27ae60, #2ecc71)";
+
+        const successMsg = document.createElement("div");
+        successMsg.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+            z-index: 1000;
+            font-weight: 600;
+            animation: slideInRight 0.5s ease-out;
+          ">
+            🎉 ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ವೇದಿಕೆಗೆ ಸ್ವಾಗತ!<br>
+            <small style="opacity: 0.9;">ನೋಂದಣಿ ಯಶಸ್ವಿಯಾಗಿ ಮುಗಿಯಿತು</small>
+          </div>
+          <style>
+            @keyframes slideInRight {
+              from { transform: translateX(100%); opacity: 0; }
+              to { transform: translateX(0); opacity: 1; }
+            }
+          </style>
+        `;
+        document.body.appendChild(successMsg);
+
+        setTimeout(() => {
+          form.reset();
+          formWrapper.classList.remove("success");
+          submitBtn.innerHTML = "🚀 ನೋಂದಣಿ & ಬುದ್ಧಿವಂತವಾಗಿ ಬೆಳೆಯಿರಿ";
+          submitBtn.style.background = "linear-gradient(45deg, #2ecc71, #27ae60)";
+          document.body.removeChild(successMsg);
+        }, 3000);
+
+      } catch (error) {
+        formWrapper.classList.remove("loading");
+        submitBtn.innerHTML = "❌ ನೋಂದಣಿ ವಿಫಲ - ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ";
+        submitBtn.style.background = "linear-gradient(45deg, #e74c3c, #c0392b)";
+
+        const errorMsg = document.createElement("div");
+        errorMsg.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+            z-index: 1000;
+            font-weight: 600;
+            animation: slideInRight 0.5s ease-out;
+          ">
+            ⚠️ ನೋಂದಣಿ ವಿಫಲ!<br>
+            <small style="opacity: 0.9;">${error.message}</small>
+          </div>
+        `;
+        document.body.appendChild(errorMsg);
+
+        setTimeout(() => {
+          submitBtn.innerHTML = "🚀 ನೋಂದಣಿ & ಬುದ್ಧಿವಂತವಾಗಿ ಬೆಳೆಯಿರಿ";
+          submitBtn.style.background = "linear-gradient(45deg, #2ecc71, #27ae60)";
+          document.body.removeChild(errorMsg);
+        }, 4000);
+      }
+    });
+
+    const inputs = document.querySelectorAll('input[required]');
+    inputs.forEach(input => {
+      input.addEventListener('blur', function() {
+        if (this.value.trim() === '') {
+          this.style.borderColor = '#e74c3c';
+          this.style.boxShadow = '0 0 0 4px rgba(231, 76, 60, 0.1)';
+        } else {
+          this.style.borderColor = '#27ae60';
+          this.style.boxShadow = '0 0 0 4px rgba(46, 204, 113, 0.1)';
+        }
+      });
+
+      input.addEventListener('input', function() {
+        if (this.style.borderColor === 'rgb(231, 76, 60)') {
+          this.style.borderColor = '#e0e6ed';
+          this.style.boxShadow = 'none';
+        }
+      });
+    });
+
+    document.getElementById('phone').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 10) value = value.slice(0, 10);
+      e.target.value = value;
+    });
+
+    document.getElementById('soil_ph').addEventListener('input', function(e) {
+      let value = parseFloat(e.target.value);
+      if (value < 0) e.target.value = 0;
+      if (value > 14) e.target.value = 14;
+    });
+
+  </script>
+
+</body>
+</html>

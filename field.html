@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Motor Control Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f9f4; padding: 30px; }
+    .card {
+      background: white; border-radius: 12px; padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 300px;
+    }
+    h2 { color: #2E7D32; margin-bottom: 10px; }
+    #motorStatus { font-weight: bold; }
+    button {
+      margin-top: 15px; padding: 10px 20px; font-size: 16px;
+      border: none; border-radius: 8px; cursor: pointer;
+    }
+    .on { background: #4CAF50; color: white; }
+    .off { background: #f44336; color: white; }
+  </style>
+</head>
+<body>
+  <h1>🚰 Motor Control</h1>
+  <div class="card">
+    <h2>Status: <span id="motorStatus">Loading...</span></h2>
+    <button id="toggleMotor">Toggle Motor</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVzjc_wkA4kvDIcOGPobn3NVUItVuI3_Q",
+      authDomain: "smartirriaug2025.firebaseapp.com",
+      projectId: "smartirriaug2025",
+      storageBucket: "smartirriaug2025.appspot.com",
+      messagingSenderId: "297001736270",
+      appId: "1:297001736270:web:8aa96f7a2c977768b70b1f",
+      databaseURL: "https://smartirriaug2025-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 🔴 Hardcoded UID
+    const uid = "vIonrgoTtGr5nRhgYwUl";
+    const motorRef = ref(db, `farmers/${uid}/motor_status`);
+
+    // Listen for changes
+    onValue(motorRef, (snapshot) => {
+      const status = snapshot.val() || "off";
+      const statusEl = document.getElementById("motorStatus");
+      statusEl.innerText = status.toUpperCase();
+
+      const btn = document.getElementById("toggleMotor");
+      btn.className = (status === "on") ? "on" : "off";
+    });
+
+    // Toggle motor
+    document.getElementById("toggleMotor").addEventListener("click", async () => {
+      const currentStatus = document.getElementById("motorStatus").innerText.toLowerCase();
+      const newStatus = (currentStatus === "on") ? "off" : "on";
+      await set(motorRef, newStatus);
+    });
+  </script>
+</body>
+</html>
